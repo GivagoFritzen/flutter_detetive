@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:audioplayers/audio_cache.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterdetetive/utils/colorsUtil.dart';
 
 class CameraPage extends StatefulWidget {
   CameraPage({Key key}) : super(key: key);
@@ -15,8 +14,9 @@ class CameraPage extends StatefulWidget {
 class CameraPageState extends State<CameraPage> {
   final _random = new Random();
   List<String> places = new List<String>();
+  List<String> events = ["call", "message"];
   String place = "banco";
-  Timer _timer;
+  Timer _timer, _timerEvent;
 
   AudioCache player;
 
@@ -37,13 +37,18 @@ class CameraPageState extends State<CameraPage> {
       },
     );
 
+    /*
+    const periodEvent = const Duration(seconds: 5);
+    _timerEvent = new Timer.periodic(periodEvent, (Timer t) => {RandomEvent()});
+     */
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _timer.cancel();
-    _timer = null;
+    Pause();
+
     super.dispose();
   }
 
@@ -77,21 +82,89 @@ class CameraPageState extends State<CameraPage> {
     );
   }
 
+  void RandomEvent() {
+    int randomEvent = _random.nextInt(events.length);
+    String nameEvent = events[randomEvent];
+
+    Pause();
+
+    if (nameEvent == "call")
+      Navigator.pushNamed(
+        context,
+        '/${nameEvent}',
+        arguments: {
+          'personName': "widget.accuracy",
+          'personImage': "dona-branca",
+          'personColor': Colors.blueAccent,
+        },
+      );
+    else
+      Navigator.pushNamed(
+        context,
+        '/${nameEvent}',
+        arguments: {
+          'message': "widget.accuracy",
+        },
+      );
+  }
+
+  void Pause() {
+    _timer.cancel();
+    _timer = null;
+
+    _timerEvent.cancel();
+    _timerEvent = null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: getDecorationBackground(),
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Opacity(
-          opacity: 0.05,
-          child: Image(
-            image: AssetImage('assets/background/tv-no-signal.gif'),
-            fit: BoxFit.fill,
-            height: 10,
+      body: Column(
+        children: <Widget>[
+          Container(
+            decoration: getDecorationBackground(),
+            height: MediaQuery.of(context).size.height * .85,
+            width: MediaQuery.of(context).size.width,
+            child: Opacity(
+              opacity: 0.05,
+              child: Image(
+                image: AssetImage('assets/background/tv-no-signal.gif'),
+                fit: BoxFit.fill,
+                height: 10,
+              ),
+            ),
           ),
-        ),
+          Container(
+            child: Center(
+              child: Text(
+                "FIQUE ATENTO! A QUALQUER MOMENTO O CELULAR PODE TE DAR DICAS. NÃO SAIA DO APLICATIVO PARA NÃO PERDÊ-LAS",
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            color: ColorsUtil.getDarkGreen(),
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .1,
+          ),
+          Container(
+            child: Row(
+              children: <Widget>[
+                Text(
+                  "SOLOCIONAR O CASO",
+                  textAlign: TextAlign.center,
+                ),
+                Container(
+                  child: Icon(
+                    Icons.pause,
+                  ),
+                ),
+              ],
+            ),
+            color: Colors.yellow,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * .05,
+          ),
+        ],
       ),
     );
   }

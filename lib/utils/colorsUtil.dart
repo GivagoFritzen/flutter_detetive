@@ -5,6 +5,10 @@ class ColorsUtil {
     return Color(0xff10201A);
   }
 
+  static Color getMediumGreen() {
+    return Color(0xff2A5045);
+  }
+
   static Color getLightGreen() {
     return Color(0xff376C5A);
   }

@@ -3,17 +3,25 @@ import 'package:flutter/material.dart';
 class ChoiceOptionsAba extends StatelessWidget {
   String text;
   Color backgroundColor;
+  Function function;
 
-  ChoiceOptionsAba({this.text, this.backgroundColor});
+  ChoiceOptionsAba({this.text, this.backgroundColor, this.function})
+      : assert(text != null && backgroundColor != null && function != null);
 
   Widget buttonComeback(BuildContext context) {
-    return Container(
-      color: Colors.yellow,
+    return SizedBox(
       width: MediaQuery.of(context).size.width * .125,
-      height: double.infinity,
-      child: Icon(
-        Icons.arrow_back_ios,
-        color: Colors.black,
+      child: RawMaterialButton(
+        onPressed: function,
+        child: Container(
+          color: Colors.yellow,
+          width: MediaQuery.of(context).size.width * .125,
+          height: double.infinity,
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+          ),
+        ),
       ),
     );
   }
@@ -30,7 +38,8 @@ class ChoiceOptionsAba extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 15),
             child: ConstrainedBox(
-              constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * .8),
+              constraints: BoxConstraints(
+                  maxWidth: MediaQuery.of(context).size.width * .8),
               child: Text(
                 text,
                 style: TextStyle(

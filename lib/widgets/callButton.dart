@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class CallButton extends StatelessWidget {
   bool answer;
+  Function function;
 
-  CallButton({this.answer = true});
+  CallButton({this.answer = true, this.function}) : assert(function != null);
 
   Animation<double> getRotation() {
     if (answer)
@@ -17,7 +18,7 @@ class CallButton extends StatelessWidget {
     double size = 55;
 
     return RawMaterialButton(
-      onPressed: () => print("teste"),
+      onPressed: function,
       child: Container(
         height: size,
         width: size,

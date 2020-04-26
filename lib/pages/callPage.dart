@@ -25,7 +25,7 @@ class _CallPageState extends State<CallPage> {
 
   void _getData() async {
     final data =
-    ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     setState(() {
       personName = data['personName'];
@@ -68,8 +68,16 @@ class _CallPageState extends State<CallPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          CallButton(),
           CallButton(
+            function: () => print("object"),
+          ),
+          CallButton(
+            function: () => {
+              Navigator.pushNamed(
+                context,
+                '/camera',
+              )
+            },
             answer: false,
           ),
         ],
