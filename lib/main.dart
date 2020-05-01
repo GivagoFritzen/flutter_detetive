@@ -1,9 +1,13 @@
 import 'dart:ui';
 
+import 'package:flutterdetetive/scoped_models/main.dart';
+import 'package:scoped_model/scoped_model.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/pages/callPage.dart';
 import 'package:flutterdetetive/pages/cameraPage.dart';
 import 'package:flutterdetetive/pages/choiceCardsToPlayPage.dart';
+import 'package:flutterdetetive/pages/choiceKillerPage.dart';
 import 'package:flutterdetetive/pages/homePage.dart';
 import 'package:flutterdetetive/pages/investigationPage.dart';
 import 'package:flutterdetetive/pages/messagePage.dart';
@@ -41,22 +45,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    final MainModel _model = MainModel();
+
+    return ScopedModel<MainModel>(
+      model: _model,
+      child: MaterialApp(
+        title: 'Detetive',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: getBodyDefault(HomePage()),
+        routes: {
+          '/home': (context) => getBodyDefault(HomePage()),
+          '/investigation': (context) => getBodyDefault(InvestigationPage()),
+          '/call': (context) => CallPage(),
+          '/message': (context) => MessagePage(),
+          '/testimony': (context) => TestimonyPage(),
+          '/newspaper': (context) => NewsPaperPage(),
+          '/camera': (context) => CameraPage(),
+          '/choice': (context) => ChoiceCardsToPlayPage(),
+          '/choicekiller': (context) => ChoiceKillerPage(),
+        },
       ),
-      home: getBodyDefault(HomePage()),
-      routes: {
-        '/home': (context) => getBodyDefault(HomePage()),
-        '/investigation': (context) => getBodyDefault(InvestigationPage()),
-        '/call': (context) => CallPage(),
-        '/message': (context) => MessagePage(),
-        '/testimony': (context) => TestimonyPage(),
-        '/newspaper': (context) => NewsPaperPage(),
-        '/camera': (context) => CameraPage(),
-        '/choice': (context) => ChoiceCardsToPlayPage(),
-      },
     );
   }
 }

@@ -12,6 +12,7 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   audioplayers: ^0.15.1
+  scoped_model: ^1.0.1
 
 dev_dependencies:
   flutter_test:
