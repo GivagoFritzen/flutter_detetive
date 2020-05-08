@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutterdetetive/controllers/PlayerController.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
 import 'package:flutterdetetive/widgets/callButton.dart';
 import 'package:flutterdetetive/widgets/playerIcon.dart';
@@ -10,8 +13,15 @@ class CallPage extends StatefulWidget {
 
 class _CallPageState extends State<CallPage> {
   bool _isInit = true;
-  String personName, personImage;
-  Color personColor;
+  bool _isAccepted = false;
+  PlayerController playerController;
+
+  Timer _timer;
+  int seconds = 0;
+  int minutes = 0;
+  Widget personsWidget = Container();
+
+  Widget buttonsWidget = Container();
 
   @override
   void didChangeDependencies() {
@@ -19,8 +29,17 @@ class _CallPageState extends State<CallPage> {
       _getData();
     }
 
-    _isInit = false;
+    setState(() {
+      _isInit = false;
+    });
+
     super.didChangeDependencies();
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
   }
 
   void _getData() async {
@@ -28,9 +47,7 @@ class _CallPageState extends State<CallPage> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     setState(() {
-      personName = data['personName'];
-      personImage = data['personImage'];
-      personColor = data['personColor'];
+      playerController = data['playerController'];
     });
   }
 
@@ -42,76 +59,166 @@ class _CallPageState extends State<CallPage> {
     );
   }
 
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(() {
+        if (seconds >= 59) {
+          seconds = 0;
+          minutes += 1;
+        } else {
+          seconds += 1;
+        }
+      }),
+    );
+  }
+
+  Widget showTimer() {
+    if (_isAccepted) {
+      return Padding(
+        padding: EdgeInsets.only(bottom: 25),
+        child: Text(
+          "${showTwoDigits(minutes)}:${showTwoDigits(seconds)}",
+          style: TextStyle(color: Colors.white),
+        ),
+      );
+    }
+
+    return Container();
+  }
+
+  String showTwoDigits(int number) {
+    String twoDigits = "";
+
+    if (number < 10) twoDigits = "0";
+
+    twoDigits += number.toString();
+
+    return twoDigits;
+  }
+
   Widget getPersons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        PlayerIcon(
-          isAnonymous: true,
-          imageName: "anonymous",
-          name: "Anônimo",
+    if (!_isAccepted) {
+      personsWidget = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          PlayerIcon(
+            isAnonymous: true,
+            imageName: "anonymous",
+            name: "Anônimo",
+          ),
+          getCursor(Colors.grey),
+          getCursor(Colors.white),
+          PlayerIcon(
+            imageName: playerController.playerImage,
+            name: playerController.name,
+            playerColor: playerController.playerColor,
+          ),
+        ],
+      );
+    } else {
+      personsWidget = Center(
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 35),
+          child: PlayerIcon(
+            isAnonymous: true,
+            imageName: "anonymous",
+            name: "Anônimo",
+          ),
         ),
-        getCursor(Colors.grey),
-        getCursor(Colors.white),
-        PlayerIcon(
-          imageName: personImage,
-          name: personName,
-          playerColor: personColor,
-        ),
-      ],
+      );
+    }
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(
+          child: child,
+          scale: animation,
+        );
+      },
+      child: personsWidget,
     );
   }
 
   Widget getCallController() {
-    return Padding(
-      padding: EdgeInsets.only(top: 25),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          CallButton(
-            function: () => print("object"),
-          ),
-          CallButton(
-            function: () => {
-              Navigator.pushNamed(
-                context,
-                '/camera',
-              )
-            },
-            answer: false,
-          ),
-        ],
-      ),
+    if (!_isAccepted) {
+      buttonsWidget = Padding(
+        padding: EdgeInsets.only(top: 25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CallButton(
+              accepted: false,
+              function: () => {
+                setState(() {
+                  _isAccepted = true;
+                  startTimer();
+                })
+              },
+            ),
+            CallButton(
+              function: () => {
+                Navigator.pushNamed(
+                  context,
+                  '/camera',
+                )
+              },
+              answer: false,
+            ),
+          ],
+        ),
+      );
+    } else {
+      buttonsWidget = CallButton(
+        accepted: true,
+        function: () => {},
+      );
+    }
+
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 250),
+      transitionBuilder: (Widget child, Animation<double> animation) {
+        return ScaleTransition(
+          child: child,
+          scale: animation,
+        );
+      },
+      child: buttonsWidget,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: ColorsUtil.getDarkGreen(),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            color: ColorsUtil.getLightGreen(),
-            height: 50,
-            width: double.infinity,
-            child: Center(
-              child: Text(
-                "RECEBENDO CHAMADA",
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                  decoration: TextDecoration.none,
+    return Scaffold(
+      body: Container(
+        color: ColorsUtil.getDarkGreen(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              color: Colors.green,
+              height: 50,
+              width: double.infinity,
+              child: Center(
+                child: Text(
+                  "RECEBENDO CHAMADA",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
               ),
             ),
-          ),
-          Spacer(),
-          getPersons(),
-          getCallController(),
-          Spacer(),
-        ],
+            Spacer(),
+            showTimer(),
+            getPersons(),
+            getCallController(),
+            Spacer(),
+          ],
+        ),
       ),
     );
   }

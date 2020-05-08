@@ -48,9 +48,27 @@ class PlayerIcon extends StatelessWidget {
     );
   }
 
+  Widget getName() {
+    if (name != "" && name != null) {
+      return Padding(
+        padding: EdgeInsets.only(top: 15),
+        child: Text(
+          name.toUpperCase(),
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.white,
+            decoration: TextDecoration.none,
+          ),
+        ),
+      );
+    }
+
+    return Container();
+  }
+
   @override
   Widget build(BuildContext context) {
-    double size = 65;
+    double size = 100;
 
     return Stack(
       overflow: Overflow.clip,
@@ -67,15 +85,7 @@ class PlayerIcon extends StatelessWidget {
                 decoration: getDecorationContent(),
               ),
             ),
-            if (name != "" && name != null)
-              Text(
-                name,
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black,
-                  decoration: TextDecoration.none,
-                ),
-              ),
+            getName(),
           ],
         ),
       ],

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CallButton extends StatelessWidget {
-  bool answer;
+  bool answer, accepted;
   Function function;
 
-  CallButton({this.answer = true, this.function}) : assert(function != null);
+  CallButton({this.answer = true, this.function, this.accepted = false})
+      : assert(function != null);
 
   Animation<double> getRotation() {
     if (answer)
@@ -13,17 +14,30 @@ class CallButton extends StatelessWidget {
       return new AlwaysStoppedAnimation(0 / 360);
   }
 
+  Color getBackgroundColor() {
+    if (!answer)
+      return Colors.red;
+    else if (answer && accepted)
+      return Colors.grey;
+    else
+      return Colors.green;
+  }
+
   @override
   Widget build(BuildContext context) {
     double size = 55;
 
     return RawMaterialButton(
-      onPressed: function,
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
+      onPressed: () => {
+        if (!answer || answer && !accepted) function(),
+      },
       child: Container(
         height: size,
         width: size,
         decoration: new BoxDecoration(
-          color: answer ? Colors.green : Colors.red,
+          color: getBackgroundColor(),
           shape: BoxShape.circle,
         ),
         child: RotationTransition(

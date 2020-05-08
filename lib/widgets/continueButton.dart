@@ -11,6 +11,8 @@ class ContinueButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RawMaterialButton(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onPressed: function,
       child: Container(
         height: 35,

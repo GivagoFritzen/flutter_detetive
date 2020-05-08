@@ -22,6 +22,8 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
   ChoiceCardsToPlayPageStep choiceCardsToPlayPageStep =
       ChoiceCardsToPlayPageStep.Players;
 
+  MainModel model;
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -99,7 +101,7 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
     );
   }
 
-  Widget showAba(MainModel model) {
+  Widget showAba() {
     Color backgroundColor = ColorsUtil.getLightGreen();
 
     String text = "";
@@ -204,7 +206,7 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
     }
   }
 
-  Widget showButtons(MainModel model) {
+  Widget showButtons(BuildContext context) {
     if (choiceCardsToPlayPageStep == ChoiceCardsToPlayPageStep.Players) {
       return ContinueButton(
         isActived: players.length >= 3 ? true : false,
@@ -240,10 +242,7 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
               name: "Selecionar",
               function: () => {
                 setState(() {
-                  choiceCardsToPlayPageStep =
-                      ChoiceCardsToPlayPageStep.ManualPlayers;
-                  model.updateListPlayers(players);
-                  Navigator.pushNamed(context, '/choicekiller');
+                  createAlertDialog(context);
                 })
               },
             ),
@@ -254,11 +253,56 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
       return Container();
   }
 
-  void UpdatePlayers(MainModel model) {
+  void updatePlayers() {
     if (choiceCardsToPlayPage) {
       players = model.players;
       choiceCardsToPlayPageStep = ChoiceCardsToPlayPageStep.TypeOfChoice;
     }
+  }
+
+  createAlertDialog(BuildContext context) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: ColorsUtil.getDarkGreen(),
+          content: Text(
+            'PEÇA A UMA PESSOA QUE NÃO VAI PARTICIPAR DO JOGO PARA REALIZAR ESSA ETAPA, POIS ELA SABERÁ O RESULTADO FINAL.',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(top: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ContinueButton(
+                    isActived: true,
+                    name: "VOLTAR",
+                    function: () => {
+                      Navigator.pop(context),
+                    },
+                  ),
+                  SizedBox(width: 15),
+                  ContinueButton(
+                    isActived: true,
+                    name: "CONTINUAR",
+                    function: () => {
+                      setState(() {
+                        choiceCardsToPlayPageStep =
+                            ChoiceCardsToPlayPageStep.ManualPlayers;
+                        model.updateListPlayers(players);
+                        Navigator.pushNamed(context, '/choicekiller');
+                      })
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -266,7 +310,8 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
     return Scaffold(
       body: ScopedModelDescendant<MainModel>(
           builder: (BuildContext context, Widget child, MainModel model) {
-        UpdatePlayers(model);
+            this.model = model;
+        updatePlayers();
 
         return Container(
           color: ColorsUtil.getDarkGreen(),
@@ -274,10 +319,10 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
           width: double.infinity,
           child: Column(
             children: <Widget>[
-              showAba(model),
+              showAba(),
               showAllPossiblePlayer(),
               informationAboutScan(),
-              showButtons(model),
+              showButtons(context),
             ],
           ),
         );

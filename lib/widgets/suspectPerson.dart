@@ -131,6 +131,8 @@ class _SuspectPersonState extends State<SuspectPerson> {
 
     child:
     return RawMaterialButton(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onPressed: () => changeSuspectType(),
       child: Stack(
         overflow: Overflow.visible,

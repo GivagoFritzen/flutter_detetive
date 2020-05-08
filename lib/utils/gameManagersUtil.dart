@@ -1,4 +1,28 @@
-class GameManagersUtils {
+import 'package:flutter/material.dart';
+
+class GameManagersUtil {
+  static Color getColorByName(String name) {
+    Color color = Colors.grey;
+
+    if (name == "Dona BRANCA")
+      color = Colors.pinkAccent;
+    else if (name == "Dona VIOLETA")
+      color = Colors.deepPurpleAccent;
+    else if (name == "Mordomo James")
+      color = Colors.blueGrey;
+    else if (name == "Sargento BIGODE")
+      color = Colors.yellow;
+    else if (name == "Senhor MARINHO")
+      color = Colors.lightGreen;
+    else if (name == "Senhora ROSA")
+      color = Colors.red;
+    else if (name == "Sérgio SOTURNO")
+      color = Colors.lightBlueAccent;
+    else if (name == "Tony GOURMET") color = Colors.deepOrangeAccent;
+
+    return color;
+  }
+
   static String getImageNameKiller(String name) {
     String imageName = 'anonymous';
 
@@ -65,5 +89,23 @@ class GameManagersUtils {
     else if (name == "Veneno") imageName = 'veneno';
 
     return imageName;
+  }
+
+  static int getTimeEventsInSeconds(int sizePlayers) {
+    int eventTimeInMinutes = 0;
+
+    if (sizePlayers <= 3)
+      eventTimeInMinutes = 10;
+    else if (sizePlayers == 4)
+      eventTimeInMinutes = 9;
+    else if (sizePlayers == 5)
+      eventTimeInMinutes = 8;
+    else if (sizePlayers == 6)
+      eventTimeInMinutes = 7;
+    else if (sizePlayers == 7)
+      eventTimeInMinutes = 6;
+    else if (sizePlayers >= 8) eventTimeInMinutes = 5;
+
+    return eventTimeInMinutes * 60;
   }
 }

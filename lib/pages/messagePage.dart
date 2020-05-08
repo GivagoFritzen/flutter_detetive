@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdetetive/controllers/PlayerController.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
+import 'package:flutterdetetive/widgets/continueButton.dart';
 import 'package:flutterdetetive/widgets/playerIcon.dart';
 
 class MessagePage extends StatefulWidget {
@@ -11,7 +13,10 @@ class MessagePage extends StatefulWidget {
 
 class MessagePageState extends State<MessagePage> {
   bool _isInit = true;
-  String message;
+  bool showMessage = false;
+  PlayerController playerController;
+
+  Widget messageWidget = Container();
 
   @override
   void didChangeDependencies() {
@@ -28,7 +33,7 @@ class MessagePageState extends State<MessagePage> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     setState(() {
-      message = data['message'];
+      playerController = data['playerController'];
     });
   }
 
@@ -45,7 +50,7 @@ class MessagePageState extends State<MessagePage> {
             child: Padding(
               padding: EdgeInsets.all(15),
               child: Text(
-                message,
+                playerController.getAndRemoveOneTip(),
                 style: TextStyle(
                   fontSize: 15,
                   color: Colors.black,
@@ -68,6 +73,85 @@ class MessagePageState extends State<MessagePage> {
     );
   }
 
+  Icon getCursor(Color color) {
+    return Icon(
+      Icons.arrow_right,
+      color: color,
+      size: 50,
+    );
+  }
+
+  Widget renderButtons() {
+    double size = 55;
+
+    if (!showMessage) {
+      return Padding(
+        padding: EdgeInsets.only(top: 15),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RawMaterialButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onPressed: () => {
+                setState(() {
+                  showMessage = true;
+                  messageWidget = getMessage();
+                }),
+              },
+              child: Container(
+                height: size,
+                width: size,
+                decoration: new BoxDecoration(
+                  color: Colors.green,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.email,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+            ),
+            RawMaterialButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              onPressed: () => Navigator.pushNamed(
+                context,
+                '/camera',
+              ),
+              child: Container(
+                height: size,
+                width: size,
+                decoration: new BoxDecoration(
+                  color: Colors.red,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.clear,
+                  color: Colors.white,
+                  size: 35,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return Padding(
+      padding: EdgeInsets.only(top: 25),
+      child: ContinueButton(
+        isActived: true,
+        name: "Continuar",
+        function: () => Navigator.pushNamed(
+          context,
+          '/camera',
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -77,20 +161,48 @@ class MessagePageState extends State<MessagePage> {
         children: <Widget>[
           Spacer(),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                Icons.message,
-                color: Colors.white,
-                size: 85,
+              Column(
+                children: <Widget>[
+                  Icon(
+                    Icons.email,
+                    color: Colors.white,
+                    size: 100,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text(
+                      'Anônimo',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        decoration: TextDecoration.none,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              getCursor(Colors.grey),
+              getCursor(Colors.white),
               PlayerIcon(
-                isAnonymous: true,
-                imageName: "anonymous",
+                name: playerController.name,
+                imageName: playerController.playerImage,
+                playerColor: playerController.playerColor,
               ),
             ],
           ),
-          getMessage(),
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 250),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition(
+                child: child,
+                scale: animation,
+              );
+            },
+            child: messageWidget,
+          ),
+          renderButtons(),
           Spacer(),
         ],
       ),

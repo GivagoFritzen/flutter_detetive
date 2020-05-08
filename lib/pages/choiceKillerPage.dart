@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/enums/choiceCardsToPlayPageStep.dart';
 import 'package:flutterdetetive/scoped_models/main.dart';
-import 'package:flutterdetetive/utils/GameManagersUtils.dart';
+import 'package:flutterdetetive/utils/gameManagersUtil.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
 import 'package:flutterdetetive/widgets/choiceKiller.dart';
 import 'package:flutterdetetive/widgets/choiceOptionsAba.dart';
 import 'package:flutterdetetive/widgets/choiceWeaponOrPlace.dart';
+import 'package:flutterdetetive/widgets/continueButton.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ChoiceKillerPage extends StatefulWidget {
@@ -18,10 +19,13 @@ class ChoiceKillerPage extends StatefulWidget {
 
 class ChoiceKillerPageState extends State<ChoiceKillerPage> {
   String killer, crimeScene, murderWeapon;
+  bool isWrong = false;
   ChoiceCardsToPlayPageStep choiceCardsToPlayPageStep =
       ChoiceCardsToPlayPageStep.ManualPlayers;
 
-  Widget showAba(MainModel model) {
+  MainModel model;
+
+  Widget showAba() {
     Color backgroundColor = Colors.red;
 
     String text = "";
@@ -259,7 +263,7 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
     return Container();
   }
 
-  Widget showPlace(MainModel model) {
+  Widget showPlace() {
     if (choiceCardsToPlayPageStep == ChoiceCardsToPlayPageStep.ManualPlace) {
       return Expanded(
         child: CustomScrollView(
@@ -275,67 +279,67 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                     name: "Banco",
                     imageName: "banco",
                     isWeapon: false,
-                    function: () => savePlace(model, "Banco"),
+                    function: () => savePlace("Banco"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Boate",
                     imageName: "boate",
                     isWeapon: false,
-                    function: () => savePlace(model, "Boate"),
+                    function: () => savePlace("Boate"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Cemitério",
                     imageName: "cemiterio",
                     isWeapon: false,
-                    function: () => savePlace(model, "Cemitério"),
+                    function: () => savePlace("Cemitério"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Estação de Trem",
                     imageName: "estacao-trem",
                     isWeapon: false,
-                    function: () => savePlace(model, "Estação de Trem"),
+                    function: () => savePlace("Estação de Trem"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Floricultura",
                     imageName: "floricultura",
                     isWeapon: false,
-                    function: () => savePlace(model, "Floricultura"),
+                    function: () => savePlace("Floricultura"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Hospital",
                     imageName: "hospital",
                     isWeapon: false,
-                    function: () => savePlace(model, "Hospital"),
+                    function: () => savePlace("Hospital"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Hotel",
                     imageName: "hotel",
                     isWeapon: false,
-                    function: () => savePlace(model, "Hotel"),
+                    function: () => savePlace("Hotel"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Mansão",
                     imageName: "mansao",
                     isWeapon: false,
-                    function: () => savePlace(model, "Mansão"),
+                    function: () => savePlace("Mansão"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Praça Central",
                     imageName: "praca-central",
                     isWeapon: false,
-                    function: () => savePlace(model, "Praça Central"),
+                    function: () => savePlace("Praça Central"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Prefeitura",
                     imageName: "prefeitura",
                     isWeapon: false,
-                    function: () => savePlace(model, "Prefeitura"),
+                    function: () => savePlace("Prefeitura"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Restaurante",
                     imageName: "restaurante",
                     isWeapon: false,
-                    function: () => savePlace(model, "Restaurante"),
+                    function: () => savePlace("Restaurante"),
                   ),
                 ],
               ),
@@ -347,42 +351,109 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
     return Container();
   }
 
-  void savePlace(MainModel model, String place) {
+  void savePlace(String place) {
     setState(() {
       crimeScene = place;
     });
 
     if (model.crimeScene == "") {
-      saveKillerInformation(model);
-      Navigator.pushNamed(context, '/camera');
+      saveKillerInformation();
+      model.startGame();
+      Navigator.pushNamedAndRemoveUntil(
+          context, '/camera', (Route route) => false);
     } else
-      answer(model);
+      answer();
   }
 
-  void saveKillerInformation(MainModel model) {
+  void saveKillerInformation() {
     model.updateKiller(killer);
     model.updateMurderWeapon(murderWeapon);
     model.updateCrimeScene(crimeScene);
   }
 
-  void answer(MainModel model) {
+  void answer() {
     if (killer != model.killer ||
         crimeScene != model.crimeScene ||
         murderWeapon != model.murderWeapon) {
-      Navigator.pushNamed(context, '/camera');
+      setState(() {
+        isWrong = true;
+      });
     } else
       Navigator.pushNamed(
         context,
         '/newspaper',
         arguments: {
           'personName': killer,
-          'personImage': GameManagersUtils.getImageNameKiller(killer),
+          'personImage': GameManagersUtil.getImageNameKiller(killer),
           'placeName': crimeScene,
-          'placeImage': GameManagersUtils.getImageNameCrimeScene(crimeScene),
+          'placeImage': GameManagersUtil.getImageNameCrimeScene(crimeScene),
           'weaponName': murderWeapon,
-          'weaponImage': GameManagersUtils.getImageNameWeapon(murderWeapon),
+          'weaponImage': GameManagersUtil.getImageNameWeapon(murderWeapon),
         },
       );
+  }
+
+  String getWrongText() {
+    if (model.players.length == 0)
+      return "Todos erraram, a polícia resolveu o crime";
+    else
+      return "O jogador ${model.currentPlayer} foi eliminado";
+  }
+
+  Widget wrongAnswer() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Spacer(),
+        Container(
+          color: Colors.red,
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: Column(
+              children: <Widget>[
+                Text(
+                  "ERRADO!",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 45,
+                  ),
+                ),
+                Text(
+                  getWrongText(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Spacer(),
+        ContinueButton(
+          isActived: true,
+          name: "CONTINUAR",
+          function: () => {
+            model.removerPlayer(),
+            setState(() {
+              isWrong = false;
+            }),
+            if (model.players.length == 0)
+              Navigator.pushNamedAndRemoveUntil(
+                  context, '/home', (Route route) => false)
+            else
+              {Navigator.pushNamed(context, '/camera')}
+          },
+        ),
+        Spacer(),
+      ],
+    );
+  }
+
+  Widget renderContent() {
+    return Column(
+      children: <Widget>[showAba(), showKiller(), showWeapon(), showPlace()],
+    );
   }
 
   @override
@@ -390,18 +461,13 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
     return Scaffold(
       body: ScopedModelDescendant<MainModel>(
           builder: (BuildContext context, Widget child, MainModel model) {
+        this.model = model;
+
         return Container(
           color: ColorsUtil.getDarkGreen(),
           height: double.infinity,
           width: double.infinity,
-          child: Column(
-            children: <Widget>[
-              showAba(model),
-              showKiller(),
-              showWeapon(),
-              showPlace(model)
-            ],
-          ),
+          child: isWrong ? wrongAnswer() : renderContent(),
         );
       }),
     );

@@ -105,6 +105,8 @@ class _SuspectWeaponOrPlaceState extends State<SuspectWeaponOrPlace> {
 
     child:
     return RawMaterialButton(
+      splashColor: Colors.transparent,
+      highlightColor: Colors.transparent,
       onPressed: () => changeSuspectType(),
       child: Stack(
         overflow: Overflow.visible,
