@@ -1,53 +1,59 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
+import 'package:flutterdetetive/utils/gameManagersUtil.dart';
 
 class ChoiceWeaponOrPlace extends StatelessWidget {
-  String name, imageName;
+  String name;
   Function function;
   bool isWeapon;
 
-  ChoiceWeaponOrPlace(
-      {this.name, this.imageName, this.function, this.isWeapon = true})
-      : assert(name != null && imageName != null && function != null);
+  ChoiceWeaponOrPlace({this.name, this.function, this.isWeapon = true})
+      : assert(name != null && function != null);
 
   String getRoute() {
     if (isWeapon)
-      return "weapons";
+      return 'assets/weapons/${GameManagersUtil.getImageNameWeapon(name)}.jpg';
     else
-      return "places";
+      return 'assets/places/${GameManagersUtil.getImageNameCrimeScene(name)}.jpg';
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(5),
-      child: Container(
-        child: RawMaterialButton(
-          onPressed: function,
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Image(
-                  image: AssetImage('assets/${getRoute()}/${imageName}.jpg'),
-                  height: MediaQuery.of(context).size.width * 0.35,
-                  fit: BoxFit.fill,
-                ),
-                Container(
-                  color: ColorsUtil.getLightGreen(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(name),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      child: RawMaterialButton(
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        onPressed: function,
+        child: Stack(
+          children: <Widget>[
+            Image(
+              image: AssetImage(getRoute()),
+              height: double.infinity,
             ),
-          ),
+            Positioned(
+              child: Column(
+                children: <Widget>[
+                  Spacer(),
+                  Container(
+                    color: ColorsUtil.getLightGreen(),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            name,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

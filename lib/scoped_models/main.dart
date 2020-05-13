@@ -15,7 +15,8 @@ class MainModel extends Model {
     _playerControllers.clear();
 
     for (String player in _players)
-      _playerControllers.add(PlayerController(player));
+      _playerControllers
+          .add(PlayerController(player, _killer, _crimeScene, _murderWeapon));
   }
 
   PlayerController randomPlayerController() {
@@ -69,5 +70,14 @@ class MainModel extends Model {
 
   void updateMurderWeapon(String murderWeapon) {
     _murderWeapon = murderWeapon;
+  }
+
+  void cleanAllInformation() {
+    _playerControllers = new List<PlayerController>();
+    _players = new List<String>();
+    _currentPlayer = "";
+    _killer = "";
+    _crimeScene = "";
+    _murderWeapon = "";
   }
 }

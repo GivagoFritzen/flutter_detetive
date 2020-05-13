@@ -4,8 +4,9 @@ class ContinueButton extends StatelessWidget {
   String name;
   bool isActived;
   Function function;
+  double width, height;
 
-  ContinueButton({this.name, this.function, this.isActived = false})
+  ContinueButton({this.name, this.function, this.isActived = false, this.width = 125, this.height = 35})
       : assert(function != null && name != null && isActived != null);
 
   @override
@@ -15,8 +16,8 @@ class ContinueButton extends StatelessWidget {
       highlightColor: Colors.transparent,
       onPressed: function,
       child: Container(
-        height: 35,
-        width: 125,
+        height: height,
+        width: width,
         decoration: BoxDecoration(
           color: this.isActived ? Colors.orangeAccent : Colors.grey,
           borderRadius: BorderRadius.all(Radius.circular(10.0)),

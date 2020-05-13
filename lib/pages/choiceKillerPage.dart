@@ -81,8 +81,7 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                 children: <Widget>[
                   ChoiceKiller(
                     name: "Sargento BIGODE",
-                    imageName: "sargento-bigode",
-                    killerColor: Colors.yellow,
+                    killer: "Sargento BIGODE",
                     function: () => setState(() {
                       killer = "Sargento BIGODE";
                       choiceCardsToPlayPageStep =
@@ -91,70 +90,63 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceKiller(
                     name: "Florista DONA BRANCA",
-                    imageName: "dona-branca",
-                    killerColor: Colors.white,
+                    killer: "Dona BRANCA",
                     function: () => setState(() {
-                      killer = "Florista DONA BRANCA";
+                      killer = "Dona BRANCA";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
                   ),
                   ChoiceKiller(
                     name: "Advogado SENHOR MARINHO",
-                    imageName: "senhor-marinho",
-                    killerColor: Colors.green,
+                    killer: "Senhor MARINHO",
                     function: () => setState(() {
-                      killer = "Advogado SENHOR MARINHO";
+                      killer = "Senhor MARINHO";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
                   ),
                   ChoiceKiller(
                     name: "Chef de Cozinha TONY GOURMET",
-                    imageName: "tony-gourmet",
-                    killerColor: Colors.brown,
+                    killer: "Tony GOURMET",
                     function: () => setState(() {
-                      killer = "Chef de Cozinha TONY GOURMET";
+                      killer = "Tony GOURMET";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
                   ),
                   ChoiceKiller(
                     name: "Dançarina Senhorita Rosa",
-                    imageName: "senhora-rosa",
-                    killerColor: Colors.red,
+                    killer: "Senhora ROSA",
                     function: () => setState(() {
-                      killer = "Dançarina Senhorita Rosa";
+                      killer = "Senhora ROSA";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
                   ),
                   ChoiceKiller(
                     name: "Médica DONA VIOLETA",
-                    imageName: "dona-violeta",
-                    killerColor: Colors.pink,
+                    killer: "Dona VIOLETA",
                     function: () => setState(() {
-                      killer = "Médica DONA VIOLETA";
+                      killer = "Dona VIOLETA";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
                   ),
                   ChoiceKiller(
                     name: "Coveiro SÉRGIO SOTURNO",
-                    imageName: "sergio-soturno",
-                    killerColor: Colors.blueGrey,
+                    killer: "Sérgio SOTURNO",
                     function: () => setState(() {
-                      killer = "Coveiro SÉRGIO SOTURNO";
+                      killer = "Sérgio SOTURNO";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
                   ),
                   ChoiceKiller(
                     name: "Mordomo JAMES",
-                    imageName: "mordomo-james",
-                    killerColor: Colors.blueAccent,
+                    killer: "Mordomo James",
                     function: () => setState(() {
-                      killer = "Mordomo JAMES";
+                      killer = "Mordomo James";
                       choiceCardsToPlayPageStep =
                           ChoiceCardsToPlayPageStep.ManualWeapon;
                     }),
@@ -183,7 +175,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                 children: <Widget>[
                   ChoiceWeaponOrPlace(
                     name: "Arma Química",
-                    imageName: "arma-quimica",
                     function: () => setState(() {
                       murderWeapon = "Arma Química";
                       choiceCardsToPlayPageStep =
@@ -192,7 +183,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Espingarda",
-                    imageName: "espingarda",
                     function: () => setState(() {
                       murderWeapon = "Espingarda";
                       choiceCardsToPlayPageStep =
@@ -201,7 +191,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Faca",
-                    imageName: "faca",
                     function: () => setState(() {
                       murderWeapon = "Faca";
                       choiceCardsToPlayPageStep =
@@ -210,7 +199,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Pá",
-                    imageName: "pa",
                     function: () => setState(() {
                       murderWeapon = "Pá";
                       choiceCardsToPlayPageStep =
@@ -219,7 +207,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Pé de Cabra",
-                    imageName: "pe-de-cabra",
                     function: () => setState(() {
                       murderWeapon = "Pé de Cabra";
                       choiceCardsToPlayPageStep =
@@ -228,7 +215,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Soco Inglês",
-                    imageName: "soco-ingles",
                     function: () => setState(() {
                       murderWeapon = "Soco Inglês";
                       choiceCardsToPlayPageStep =
@@ -237,7 +223,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Tesoura",
-                    imageName: "tesoura",
                     function: () => setState(() {
                       murderWeapon = "Tesoura";
                       choiceCardsToPlayPageStep =
@@ -246,7 +231,6 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Veneno",
-                    imageName: "veneno",
                     function: () => setState(() {
                       murderWeapon = "Veneno";
                       choiceCardsToPlayPageStep =
@@ -277,67 +261,56 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
                 children: <Widget>[
                   ChoiceWeaponOrPlace(
                     name: "Banco",
-                    imageName: "banco",
                     isWeapon: false,
                     function: () => savePlace("Banco"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Boate",
-                    imageName: "boate",
                     isWeapon: false,
                     function: () => savePlace("Boate"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Cemitério",
-                    imageName: "cemiterio",
                     isWeapon: false,
                     function: () => savePlace("Cemitério"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Estação de Trem",
-                    imageName: "estacao-trem",
                     isWeapon: false,
                     function: () => savePlace("Estação de Trem"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Floricultura",
-                    imageName: "floricultura",
                     isWeapon: false,
                     function: () => savePlace("Floricultura"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Hospital",
-                    imageName: "hospital",
                     isWeapon: false,
                     function: () => savePlace("Hospital"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Hotel",
-                    imageName: "hotel",
                     isWeapon: false,
                     function: () => savePlace("Hotel"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Mansão",
-                    imageName: "mansao",
                     isWeapon: false,
                     function: () => savePlace("Mansão"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Praça Central",
-                    imageName: "praca-central",
                     isWeapon: false,
                     function: () => savePlace("Praça Central"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Prefeitura",
-                    imageName: "prefeitura",
                     isWeapon: false,
                     function: () => savePlace("Prefeitura"),
                   ),
                   ChoiceWeaponOrPlace(
                     name: "Restaurante",
-                    imageName: "restaurante",
                     isWeapon: false,
                     function: () => savePlace("Restaurante"),
                   ),

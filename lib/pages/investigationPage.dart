@@ -92,38 +92,14 @@ class _InvestigationPageState extends State<InvestigationPage> {
             sliver: SliverGrid.count(
               crossAxisCount: 3,
               children: <Widget>[
-                SuspectWeaponOrPlace(
-                  imageName: "arma-quimica",
-                  name: "Arma Química",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "espingarda",
-                  name: "espingarda",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "faca",
-                  name: "Faca",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "pa",
-                  name: "Pá",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "pe-de-cabra",
-                  name: "Pé de Cabra",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "soco-ingles",
-                  name: "Soco Inglês",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "tesoura",
-                  name: "Tesoura",
-                ),
-                SuspectWeaponOrPlace(
-                  imageName: "veneno",
-                  name: "Veneno",
-                ),
+                SuspectWeaponOrPlace(name: "Arma Química"),
+                SuspectWeaponOrPlace(name: "Espingarda"),
+                SuspectWeaponOrPlace(name: "Faca"),
+                SuspectWeaponOrPlace(name: "Pá"),
+                SuspectWeaponOrPlace(name: "Pé de Cabra"),
+                SuspectWeaponOrPlace(name: "Soco Inglês"),
+                SuspectWeaponOrPlace(name: "Tesoura"),
+                SuspectWeaponOrPlace(name: "Veneno"),
               ],
             ),
           ),
@@ -143,57 +119,46 @@ class _InvestigationPageState extends State<InvestigationPage> {
               crossAxisCount: 3,
               children: <Widget>[
                 SuspectWeaponOrPlace(
-                  imageName: "banco",
                   name: "Banco",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "boate",
                   name: "Boate",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "cemiterio",
                   name: "Cemitério",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "estacao-trem",
                   name: "Estação de Trem",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "floricultura",
                   name: "Floricultura",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "hospital",
                   name: "Hospital",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "hotel",
                   name: "Hotel",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "mansao",
                   name: "Mansão",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "praca-central",
                   name: "Praça Central",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "prefeitura",
                   name: "Prefeitura",
                   isWeapon: false,
                 ),
                 SuspectWeaponOrPlace(
-                  imageName: "restaurante",
                   name: "Restaurante",
                   isWeapon: false,
                 ),

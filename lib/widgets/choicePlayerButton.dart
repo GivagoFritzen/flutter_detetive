@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
+import 'package:flutterdetetive/utils/gameManagersUtil.dart';
 
 class ChoicePlayerButton extends StatefulWidget {
-  String name, imageName;
-  Color suspectColor;
+  String name;
   Function function;
 
-  ChoicePlayerButton(
-      {this.suspectColor, this.name, this.imageName, this.function})
-      : assert(suspectColor != null &&
-            name != null &&
-            imageName != null &&
-            function != null);
+  ChoicePlayerButton({this.name, this.function})
+      : assert(name != null && function != null);
 
   @override
   _ChoicePlayerButtonState createState() => _ChoicePlayerButtonState();
@@ -37,7 +33,8 @@ class _ChoicePlayerButtonState extends State<ChoicePlayerButton> {
     return BoxDecoration(
       shape: BoxShape.circle,
       image: DecorationImage(
-        image: AssetImage('assets/person/${widget.imageName}.png'),
+        image: AssetImage(
+            'assets/person/${GameManagersUtil.getImageNameKiller(widget.name)}.png'),
         colorFilter: new ColorFilter.mode(
             Colors.black.withOpacity(getOpacity()), BlendMode.dstOut),
         fit: BoxFit.cover,
@@ -65,7 +62,7 @@ class _ChoicePlayerButtonState extends State<ChoicePlayerButton> {
 
   Color getPlayerColor() {
     if (isSelected)
-      return widget.suspectColor;
+      return GameManagersUtil.getColorByName(widget.name);
     else
       return Colors.black87;
   }
@@ -79,8 +76,9 @@ class _ChoicePlayerButtonState extends State<ChoicePlayerButton> {
 
   @override
   Widget build(BuildContext context) {
-    double size = 75;
-    double widthSize = 150;
+    final size = MediaQuery.of(context).size;
+    double heightSize = 75;
+    double widthSize = size.width / 2.75;
 
     return RawMaterialButton(
       splashColor: Colors.transparent,
@@ -96,7 +94,7 @@ class _ChoicePlayerButtonState extends State<ChoicePlayerButton> {
         children: [
           Container(
             color: getBackgroundColor(),
-            height: size,
+            height: heightSize,
             width: widthSize,
             child: Padding(
               padding: EdgeInsets.only(left: widthSize / 5),
@@ -104,9 +102,14 @@ class _ChoicePlayerButtonState extends State<ChoicePlayerButton> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   SizedBox(width: 15),
-                  Text(
-                    widget.name,
-                    style: TextStyle(fontSize: 12),
+                  Flexible(
+                    child: Text(
+                      widget.name,
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                   Icon(
                     Icons.brightness_1,
@@ -119,8 +122,8 @@ class _ChoicePlayerButtonState extends State<ChoicePlayerButton> {
             ),
           ),
           Positioned(
-            left: -(widthSize / 5),
-            child: renderImage(size),
+            left: -(widthSize / 4),
+            child: renderImage(heightSize),
           ),
         ],
       ),

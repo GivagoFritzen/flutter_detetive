@@ -7,6 +7,7 @@ import 'package:flutterdetetive/widgets/choiceOptionsAba.dart';
 import 'package:flutterdetetive/widgets/choicePlayerButton.dart';
 import 'package:flutterdetetive/widgets/continueButton.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 
 class ChoiceCardsToPlayPage extends StatefulWidget {
   ChoiceCardsToPlayPage({Key key}) : super(key: key);
@@ -23,6 +24,11 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
       ChoiceCardsToPlayPageStep.Players;
 
   MainModel model;
+
+  String barcode = '';
+  String scanKiller = '';
+  String scanPlace = '';
+  String scanWeapon = '';
 
   @override
   void didChangeDependencies() {
@@ -65,9 +71,12 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
                   width: MediaQuery.of(context).size.width * .7,
                   child: Column(
                     children: <Widget>[
-                      informationAboutScanRow("CARTA DO ASSASSINO"),
-                      informationAboutScanRow("CARTA DA ARMA"),
-                      informationAboutScanRow("CARTA DO LOCAL"),
+                      informationAboutScanRow(
+                          "CARTA DO ASSASSINO", scanKiller != ''),
+                      informationAboutScanRow(
+                          "CARTA DA ARMA", scanWeapon != ''),
+                      informationAboutScanRow(
+                          "CARTA DO LOCAL", scanPlace != ''),
                     ],
                   ),
                 ),
@@ -80,24 +89,51 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
       return Container();
   }
 
-  Widget informationAboutScanRow(String text) {
+  Widget informationAboutScanRow(String text, bool isActived) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        SizedBox(width: MediaQuery.of(context).size.width * .05),
+        Spacer(),
         Text(
           text,
           style: TextStyle(
             color: Colors.white,
             fontSize: 15,
           ),
+          textAlign: TextAlign.center,
         ),
-        Icon(
-          Icons.stop,
-          color: ColorsUtil.getDarkGreen(),
-          size: 80,
-        ),
+        Spacer(),
+        drawScanCard(isActived),
       ],
+    );
+  }
+
+  Widget drawScanCard(bool isActived) {
+    if (isActived) {
+      return Stack(
+        children: <Widget>[
+          Icon(
+            Icons.stop,
+            color: ColorsUtil.getDarkGreen(),
+            size: 80,
+          ),
+          Positioned(
+            left: 20,
+            top: 20,
+            child: Icon(
+              Icons.check,
+              color: Colors.white,
+              size: 40,
+            ),
+          ),
+        ],
+      );
+    }
+
+    return Icon(
+      Icons.stop,
+      color: ColorsUtil.getDarkGreen(),
+      size: 80,
     );
   }
 
@@ -132,61 +168,47 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
 
   Widget showAllPossiblePlayer() {
     if (choiceCardsToPlayPageStep == ChoiceCardsToPlayPageStep.Players) {
-      return Padding(
-        padding: EdgeInsets.only(top: 30, bottom: 30, left: 15),
-        child: Wrap(
-          spacing: MediaQuery.of(context).size.width * .125,
-          runSpacing: MediaQuery.of(context).size.width * .05,
-          children: [
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Sargento BIGODE"),
-              imageName: "sargento-bigode",
-              name: "Sargento BIGODE",
-              suspectColor: Colors.yellow,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Dona BRANCA"),
-              imageName: "dona-branca",
-              name: "Dona BRANCA",
-              suspectColor: Colors.pinkAccent,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Senhor MARINHO"),
-              imageName: "senhor-marinho",
-              name: "Senhor MARINHO",
-              suspectColor: Colors.lightGreen,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Tony GOURMET"),
-              imageName: "tony-gourmet",
-              name: "Tony GOURMET",
-              suspectColor: Colors.deepOrangeAccent,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Senhora ROSA"),
-              imageName: "senhora-rosa",
-              name: "Senhora ROSA",
-              suspectColor: Colors.red,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Dona VIOLETA"),
-              imageName: "dona-violeta",
-              name: "Dona VIOLETA",
-              suspectColor: Colors.deepPurpleAccent,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Sérgio SOTURNO"),
-              imageName: "sergio-soturno",
-              name: "Sérgio SOTURNO",
-              suspectColor: Colors.blueGrey,
-            ),
-            ChoicePlayerButton(
-              function: () => controllerPlayers("Mordomo James"),
-              imageName: "mordomo-james",
-              name: "Mordomo James",
-              suspectColor: Colors.lightBlueAccent,
-            ),
-          ],
+      return SafeArea(
+        child: Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Wrap(
+            spacing: MediaQuery.of(context).size.width * .125,
+            runSpacing: MediaQuery.of(context).size.width * .05,
+            children: [
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Sargento BIGODE"),
+                name: "Sargento BIGODE",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Dona BRANCA"),
+                name: "Dona BRANCA",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Senhor MARINHO"),
+                name: "Senhor MARINHO",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Tony GOURMET"),
+                name: "Tony GOURMET",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Senhora ROSA"),
+                name: "Senhora ROSA",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Dona VIOLETA"),
+                name: "Dona VIOLETA",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Sérgio SOTURNO"),
+                name: "Sérgio SOTURNO",
+              ),
+              ChoicePlayerButton(
+                function: () => controllerPlayers("Mordomo James"),
+                name: "Mordomo James",
+              ),
+            ],
+          ),
         ),
       );
     } else {
@@ -208,16 +230,19 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
 
   Widget showButtons(BuildContext context) {
     if (choiceCardsToPlayPageStep == ChoiceCardsToPlayPageStep.Players) {
-      return ContinueButton(
-        isActived: players.length >= 3 ? true : false,
-        name: "Continuar",
-        function: () => {
-          if (players.length >= 3)
-            setState(() {
-              choiceCardsToPlayPageStep =
-                  ChoiceCardsToPlayPageStep.TypeOfChoice;
-            })
-        },
+      return Padding(
+        padding: EdgeInsets.only(top: 15),
+        child: ContinueButton(
+          isActived: players.length >= 3 ? true : false,
+          name: "Continuar",
+          function: () => {
+            if (players.length >= 3)
+              setState(() {
+                choiceCardsToPlayPageStep =
+                    ChoiceCardsToPlayPageStep.TypeOfChoice;
+              })
+          },
+        ),
       );
     } else if (choiceCardsToPlayPageStep ==
         ChoiceCardsToPlayPageStep.TypeOfChoice) {
@@ -229,12 +254,7 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
             ContinueButton(
               isActived: true,
               name: "Escanear",
-              function: () => {
-                setState(() {
-                  choiceCardsToPlayPageStep =
-                      ChoiceCardsToPlayPageStep.TypeOfChoice;
-                })
-              },
+              function: _scan,
             ),
             SizedBox(width: 15),
             ContinueButton(
@@ -261,6 +281,8 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
   }
 
   createAlertDialog(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return showDialog(
       context: context,
       builder: (context) {
@@ -272,11 +294,12 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
           ),
           actions: [
             Padding(
-              padding: EdgeInsets.only(top: 15),
+              padding: EdgeInsets.only(top: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   ContinueButton(
+                    width: size.width * .3,
                     isActived: true,
                     name: "VOLTAR",
                     function: () => {
@@ -285,6 +308,7 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
                   ),
                   SizedBox(width: 15),
                   ContinueButton(
+                    width: size.width * .3,
                     isActived: true,
                     name: "CONTINUAR",
                     function: () => {
@@ -305,26 +329,164 @@ class ChoiceCardsToPlayPageState extends State<ChoiceCardsToPlayPage> {
     );
   }
 
+  Future _scan() async {
+    String barcode = await scanner.scan();
+    scanCard(int.parse(barcode));
+    if (scanKiller != '' && scanPlace != '' && scanWeapon != '') {
+      model.updateKiller(scanKiller);
+      model.updateMurderWeapon(scanWeapon);
+      model.updateCrimeScene(scanPlace);
+      model.updateListPlayers(players);
+      Navigator.pushNamed(
+        context,
+        '/camera',
+      );
+    }
+  }
+
+  void scanCard(int code) {
+    if (code < 9)
+      scanCardKiller(code);
+    else if (code >= 9 && code < 17)
+      scanCardWeapon(code);
+    else if (code >= 17 && code <= 27) scanCardPlace(code);
+  }
+
+  void scanCardKiller(int code) {
+    if (scanKiller != '')
+      return createAlertDialogScanDuplicate(context, 'ASSASSINO');
+
+    var killer = "";
+
+    if (code == 1) killer = "Senhor MARINHO";
+    if (code == 2) killer = "Tony GOURMET";
+    if (code == 3) killer = "Sérgio SOTURNO";
+    if (code == 4) killer = "Senhora ROSA";
+    if (code == 5) killer = "Dona BRANCA";
+    if (code == 6) killer = "Dona VIOLETA";
+    if (code == 7) killer = "Mordomo James";
+    if (code == 8) killer = "Sargento BIGODE";
+
+    setState(() => scanKiller = killer);
+  }
+
+  void scanCardPlace(int code) {
+    if (scanPlace != '')
+      return createAlertDialogScanDuplicate(context, 'LUGAR');
+
+    var place = "";
+
+    if (code == 13)
+      place = "Banco";
+    else if (code == 18)
+      place = "Boate";
+    else if (code == 19)
+      place = "Cemitério";
+    else if (code == 20)
+      place = "Estação de Trem";
+    else if (code == 21)
+      place = "Floricultura";
+    else if (code == 22)
+      place = "Hospital";
+    else if (code == 23)
+      place = "Hotel";
+    else if (code == 24)
+      place = "Mansão";
+    else if (code == 25)
+      place = "Praça Central";
+    else if (code == 26)
+      place = "Prefeitura";
+    else if (code == 27) place = "Restaurante";
+
+    setState(() => scanPlace = place);
+  }
+
+  void scanCardWeapon(int code) {
+    if (scanWeapon != '')
+      return createAlertDialogScanDuplicate(context, 'ARMA');
+
+    var weapon = "";
+
+    if (code == 9)
+      weapon = "Arma Química";
+    else if (code == 10)
+      weapon = "Espingarda";
+    else if (code == 11)
+      weapon = "Faca";
+    else if (code == 12)
+      weapon = "Pá";
+    else if (code == 13)
+      weapon = "Pé de Cabra";
+    else if (code == 14)
+      weapon = "Soco Inglês";
+    else if (code == 15)
+      weapon = "Tesoura";
+    else if (code == 16) weapon = "Veneno";
+
+    setState(() => scanWeapon = weapon);
+  }
+
+  createAlertDialogScanDuplicate(BuildContext context, String text) {
+    final size = MediaQuery.of(context).size;
+
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: Colors.red,
+          content: Text(
+            'Você já escaneou a carta para  ${text}. Por favor escaneie outra carta.',
+            style: TextStyle(color: Colors.white),
+          ),
+          actions: [
+            Padding(
+              padding: EdgeInsets.only(top: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  ContinueButton(
+                    width: size.width * .3,
+                    name: "CONTINUAR",
+                    isActived: true,
+                    function: () => {
+                      setState(() {
+                        Navigator.pop(context);
+                      })
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget renderBody() {
+    return Column(
+      children: <Widget>[
+        showAba(),
+        showAllPossiblePlayer(),
+        informationAboutScan(),
+        showButtons(context),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScopedModelDescendant<MainModel>(
           builder: (BuildContext context, Widget child, MainModel model) {
-            this.model = model;
+        this.model = model;
         updatePlayers();
 
         return Container(
           color: ColorsUtil.getDarkGreen(),
           height: double.infinity,
           width: double.infinity,
-          child: Column(
-            children: <Widget>[
-              showAba(),
-              showAllPossiblePlayer(),
-              informationAboutScan(),
-              showButtons(context),
-            ],
-          ),
+          child: renderBody(),
         );
       }),
     );

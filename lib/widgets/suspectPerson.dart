@@ -72,27 +72,44 @@ class _SuspectPersonState extends State<SuspectPerson> {
   }
 
   Widget renderSuspectType() {
-    return Positioned(
-      right: -32,
-      bottom: 59,
-      child: RotationTransition(
-        turns: new AlwaysStoppedAnimation(135 / 360),
+    if (widget.suspectType != SuspectType.noIdea) {
+      return Positioned(
+        right: 75,
+        bottom: 45,
         child: CustomPaint(
-          painter: DrawTriangle(
+          painter: DrawBottomTriangle(
             strokeColor: colorSuspectType(),
             height: 45,
-            width: 90,
+            width: 75,
           ),
         ),
-      ),
-    );
+      );
+    }
+
+    return SizedBox.shrink();
   }
 
-  Widget renderName(double height) {
+  Widget renderIconSuspectType() {
+    if (widget.suspectType != SuspectType.noIdea) {
+      return Positioned(
+        right: 10,
+        bottom: 5,
+        child: Icon(
+          iconSuspectType(),
+          color: Colors.black,
+          size: 20,
+        ),
+      );
+    }
+
+    return SizedBox.shrink();
+  }
+
+  Widget renderName(double height, double containerWidth) {
     return Container(
       color: ColorsUtil.getDarkGreen(),
-      width: double.infinity,
-      height: (height) * .2,
+      width: containerWidth,
+      height: height,
       child: Center(
         child: Text(
           widget.name,
@@ -103,21 +120,17 @@ class _SuspectPersonState extends State<SuspectPerson> {
   }
 
   Widget renderTopTriangle() {
+    double sizeHeight = 45;
+    double sizeWidth = 90;
+
     return Positioned(
-      left: -33,
-      top: 30,
-      child: RotationTransition(
-        turns: new AlwaysStoppedAnimation(-45 / 360),
-        child: Stack(
-          children: [
-            CustomPaint(
-              painter: DrawTriangle(
-                strokeColor: ColorsUtil.getDarkGreen(),
-                height: 45,
-                width: 90,
-              ),
-            ),
-          ],
+      left: 0,
+      top: 0,
+      child: CustomPaint(
+        painter: DrawTopTriangle(
+          strokeColor: ColorsUtil.getDarkGreen(),
+          height: sizeHeight,
+          width: sizeWidth,
         ),
       ),
     );
@@ -142,38 +155,27 @@ class _SuspectPersonState extends State<SuspectPerson> {
             height: containerHeight,
             width: containerWidth,
             decoration: getDecorationConfig(),
-            child: Column(
-              children: [
-                Image(
-                  image: AssetImage('assets/person/${widget.imageName}.png'),
-                  fit: BoxFit.fill,
-                  height: (containerHeight) * .8,
-                ),
-                renderName(containerHeight),
-              ],
+            child: Image(
+              image: AssetImage('assets/person/${widget.imageName}.png'),
+              fit: BoxFit.fitHeight,
             ),
+          ),
+          Positioned(
+            bottom: 0,
+            child: renderName(containerHeight * .2, containerWidth),
           ),
           renderTopTriangle(),
           Positioned(
-            left: 10,
-            top: 10,
+            left: 15 / 2,
+            top: 15 / 2,
             child: Icon(
               Icons.brightness_1,
               color: widget.suspectColor,
               size: 15,
             ),
           ),
-          if (widget.suspectType != SuspectType.noIdea) renderSuspectType(),
-          if (widget.suspectType != SuspectType.noIdea)
-            Positioned(
-              right: 5,
-              bottom: 30,
-              child: Icon(
-                iconSuspectType(),
-                color: Colors.black,
-                size: 20,
-              ),
-            ),
+          renderSuspectType(),
+          renderIconSuspectType(),
         ],
       ),
     );

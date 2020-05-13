@@ -23,6 +23,7 @@ class CameraPageState extends State<CameraPage> {
   List<String> events = ["call", "message"];
   String place = "banco";
   Timer _timer, _timerEvent;
+  bool wasInitialized = false;
 
   AudioCache player;
   MainModel model;
@@ -258,6 +259,7 @@ class CameraPageState extends State<CameraPage> {
                 isActived: true,
                 name: "ENCERRAR JOGO",
                 function: () => {
+                  model.cleanAllInformation(),
                   Pause(),
                   Navigator.pushNamedAndRemoveUntil(
                     context,
@@ -287,7 +289,10 @@ class CameraPageState extends State<CameraPage> {
       body: ScopedModelDescendant<MainModel>(
           builder: (BuildContext context, Widget child, MainModel model) {
         this.model = model;
-        Play();
+        if (!wasInitialized) {
+          Play();
+          wasInitialized = true;
+        }
 
         return Column(
           children: <Widget>[

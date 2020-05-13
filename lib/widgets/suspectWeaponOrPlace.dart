@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/enums/suspectType.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
+import 'package:flutterdetetive/utils/gameManagersUtil.dart';
 import 'package:flutterdetetive/utils/shapes/triangle.dart';
 
 class SuspectWeaponOrPlace extends StatefulWidget {
-  String name, imageName;
+  String name;
   bool isWeapon;
   SuspectType suspectType = SuspectType.noIdea;
 
-  SuspectWeaponOrPlace({this.name, this.imageName, this.isWeapon = true})
-      : assert(name != null && imageName != null);
+  SuspectWeaponOrPlace({this.name, this.isWeapon = true})
+      : assert(name != null);
 
   @override
   _SuspectWeaponOrPlaceState createState() => _SuspectWeaponOrPlaceState();
@@ -60,20 +61,37 @@ class _SuspectWeaponOrPlaceState extends State<SuspectWeaponOrPlace> {
   }
 
   Widget renderSuspectType() {
-    return Positioned(
-      right: -32,
-      bottom: 70,
-      child: RotationTransition(
-        turns: new AlwaysStoppedAnimation(135 / 360),
+    if (widget.suspectType != SuspectType.noIdea) {
+      return Positioned(
+        right: 75,
+        bottom: 45,
         child: CustomPaint(
-          painter: DrawTriangle(
+          painter: DrawBottomTriangle(
             strokeColor: colorSuspectType(),
             height: 45,
-            width: 90,
+            width: 75,
           ),
         ),
-      ),
-    );
+      );
+    }
+
+    return SizedBox.shrink();
+  }
+
+  Widget renderIconSuspectType() {
+    if (widget.suspectType != SuspectType.noIdea) {
+      return Positioned(
+        right: 10,
+        bottom: 5,
+        child: Icon(
+          iconSuspectType(),
+          color: Colors.black,
+          size: 20,
+        ),
+      );
+    }
+
+    return SizedBox.shrink();
   }
 
   Widget renderName(double height) {
@@ -92,9 +110,9 @@ class _SuspectWeaponOrPlaceState extends State<SuspectWeaponOrPlace> {
 
   String getRoute() {
     if (widget.isWeapon)
-      return "weapons";
+      return 'assets/weapons/${GameManagersUtil.getImageNameWeapon(widget.name)}.jpg';
     else
-      return "places";
+      return 'assets/places/${GameManagersUtil.getImageNameCrimeScene(widget.name)}.jpg';
   }
 
   @override
@@ -118,24 +136,14 @@ class _SuspectWeaponOrPlaceState extends State<SuspectWeaponOrPlace> {
             child: Column(
               children: [
                 Image(
-                  image: AssetImage(
-                      'assets/${getRoute()}/${widget.imageName}.jpg'),
+                  image: AssetImage(getRoute()),
                 ),
                 renderName(containerHeight),
               ],
             ),
           ),
-          if (widget.suspectType != SuspectType.noIdea) renderSuspectType(),
-          if (widget.suspectType != SuspectType.noIdea)
-            Positioned(
-              right: 5,
-              bottom: 45,
-              child: Icon(
-                iconSuspectType(),
-                color: Colors.black,
-                size: 25,
-              ),
-            ),
+          renderSuspectType(),
+          renderIconSuspectType(),
         ],
       ),
     );

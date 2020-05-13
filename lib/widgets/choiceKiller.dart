@@ -1,20 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
+import 'package:flutterdetetive/utils/gameManagersUtil.dart';
 
 class ChoiceKiller extends StatelessWidget {
-  String name, imageName;
-  Color killerColor;
+  String name, killer;
   Function function;
 
-  ChoiceKiller({this.name, this.imageName, this.killerColor, this.function})
-      : assert(name != null &&
-            imageName != null &&
-            killerColor != null &&
-            function != null);
+  ChoiceKiller({this.name, this.killer, this.function})
+      : assert(name != null && killer != null && function != null);
 
   BoxDecoration getDecorationConfig() {
     return BoxDecoration(
-      color: killerColor,
+      color: GameManagersUtil.getColorByName(killer),
       image: DecorationImage(
         image: AssetImage('assets/background/mugshot.jpg'),
         colorFilter: new ColorFilter.mode(
@@ -32,37 +29,41 @@ class ChoiceKiller extends StatelessWidget {
         decoration: getDecorationConfig(),
         child: RawMaterialButton(
           onPressed: function,
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Image(
-                  image: AssetImage('assets/person/${imageName}.png'),
-                  height: MediaQuery.of(context).size.width * 0.35,
-                  fit: BoxFit.fill,
-                ),
-                Container(
-                  color: ColorsUtil.getLightGreen(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Flexible(
-                        child: Text(
-                          name,
-                          textAlign: TextAlign.center,
-                        ),
+          child: Stack(
+            children: <Widget>[
+              Image(
+                image: AssetImage(
+                    'assets/person/${GameManagersUtil.getImageNameKiller(killer)}.png'),
+                height: double.infinity,
+              ),
+              Positioned(
+                child: Column(
+                  children: <Widget>[
+                    Spacer(),
+                    Container(
+                      color: ColorsUtil.getLightGreen(),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Flexible(
+                            child: Text(
+                              name,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Icon(
+                            Icons.brightness_1,
+                            color: GameManagersUtil.getColorByName(killer),
+                          ),
+                        ],
                       ),
-                      SizedBox(width: 10),
-                      Icon(
-                        Icons.brightness_1,
-                        color: killerColor,
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
