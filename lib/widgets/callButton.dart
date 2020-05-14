@@ -30,9 +30,7 @@ class CallButton extends StatelessWidget {
     return RawMaterialButton(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onPressed: () => {
-        if (!answer || answer && !accepted) function(),
-      },
+      onPressed: () => {function()},
       child: Container(
         height: size,
         width: size,

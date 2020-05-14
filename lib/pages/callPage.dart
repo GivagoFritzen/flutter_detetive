@@ -1,5 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterdetetive/controllers/PlayerController.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
@@ -15,6 +18,9 @@ class _CallPageState extends State<CallPage> {
   bool _isInit = true;
   bool _isAccepted = false;
   PlayerController playerController;
+
+  AudioPlayer audioPlayer = AudioPlayer();
+  AudioCache player = AudioCache();
 
   Timer _timer;
   int seconds = 0;
@@ -155,6 +161,7 @@ class _CallPageState extends State<CallPage> {
                 setState(() {
                   _isAccepted = true;
                   startTimer();
+                  playSound();
                 })
               },
             ),
@@ -173,7 +180,13 @@ class _CallPageState extends State<CallPage> {
     } else {
       buttonsWidget = CallButton(
         accepted: true,
-        function: () => {},
+        function: () => {
+          audioPlayer?.stop(),
+          Navigator.pushNamed(
+            context,
+            '/camera',
+          )
+        },
       );
     }
 
@@ -187,6 +200,12 @@ class _CallPageState extends State<CallPage> {
       },
       child: buttonsWidget,
     );
+  }
+
+  void playSound() async {
+    Random random = new Random();
+    int randomNumber = random.nextInt(35) + 1;
+    audioPlayer = await player.play('sounds/voices/voice${randomNumber}.mp3');
   }
 
   @override

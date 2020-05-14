@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterdetetive/widgets/continueButton.dart';
 
 class TestimonyPage extends StatefulWidget {
   TestimonyPage({Key key}) : super(key: key);
@@ -81,16 +82,29 @@ class TestimonyPageState extends State<TestimonyPage> {
           Spacer(),
           Container(
             color: Colors.black54,
-            height: MediaQuery.of(context).size.height * .25,
             width: double.infinity,
             child: Center(
-              child: Text(
-                message,
-                style: TextStyle(
-                  fontSize: 25,
-                  color: Colors.white,
-                  decoration: TextDecoration.none,
+              child: Padding(
+                padding: EdgeInsets.all(25),
+                child: Text(
+                  message,
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
+                  ),
                 ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: ContinueButton(
+              isActived: true,
+              name: "CONTINUAR",
+              function: () => Navigator.pushNamed(
+                context,
+                '/camera',
               ),
             ),
           ),

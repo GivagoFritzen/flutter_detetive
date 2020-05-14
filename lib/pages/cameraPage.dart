@@ -7,6 +7,7 @@ import 'package:flutterdetetive/controllers/PlayerController.dart';
 import 'package:flutterdetetive/scoped_models/main.dart';
 import 'package:flutterdetetive/utils/colorsUtil.dart';
 import 'package:flutterdetetive/utils/gameManagersUtil.dart';
+import 'package:flutterdetetive/utils/messagesUtil.dart';
 import 'package:flutterdetetive/widgets/continueButton.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -20,7 +21,8 @@ class CameraPage extends StatefulWidget {
 class CameraPageState extends State<CameraPage> {
   final _random = new Random();
   List<String> places = new List<String>();
-  List<String> events = ["call", "message"];
+  List<String> events = ["call", "message", "testimony"];
+  List<String> allTips = new List<String>();
   String place = "banco";
   Timer _timer, _timerEvent;
   bool wasInitialized = false;
@@ -79,13 +81,26 @@ class CameraPageState extends State<CameraPage> {
 
     PlayerController randomPlayer = model.randomPlayerController();
 
-    Navigator.pushNamed(
-      context,
-      '/${nameEvent}',
-      arguments: {
-        'playerController': randomPlayer,
-      },
-    );
+    if (nameEvent == 'testimony') {
+      int randomMessage = _random.nextInt(allTips.length);
+      String message = allTips[randomMessage];
+
+      Navigator.pushNamed(
+        context,
+        '/testimony',
+        arguments: {
+          'message': message,
+        },
+      );
+    } else {
+      Navigator.pushNamed(
+        context,
+        '/${nameEvent}',
+        arguments: {
+          'playerController': randomPlayer,
+        },
+      );
+    }
   }
 
   void Play() {
@@ -290,6 +305,8 @@ class CameraPageState extends State<CameraPage> {
           builder: (BuildContext context, Widget child, MainModel model) {
         this.model = model;
         if (!wasInitialized) {
+          allTips = MessagesUtil.getListTips(
+              model.killer, model.crimeScene, model.murderWeapon);
           Play();
           wasInitialized = true;
         }

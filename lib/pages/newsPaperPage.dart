@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 class NewsPaperPage extends StatefulWidget {
@@ -12,6 +14,38 @@ class NewsPaperPageState extends State<NewsPaperPage> {
   String personName, personImage;
   String placeName, placeImage;
   String weaponName, weaponImage;
+
+  Timer _timer;
+  int seconds = 0;
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) => setState(() {
+        seconds += 1;
+        if (seconds >= 4) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/home',
+            (Route route) => false,
+          );
+        }
+      }),
+    );
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies() {

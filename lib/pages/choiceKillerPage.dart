@@ -352,6 +352,7 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
         isWrong = true;
       });
     } else
+      model.cleanAllInformation();
       Navigator.pushNamed(
         context,
         '/newspaper',

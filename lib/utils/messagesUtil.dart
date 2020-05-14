@@ -15,7 +15,7 @@ class MessagesUtil {
     tips.add(
         "Comece seu projeto verão na academia DETEFIT, com um incrível desconto!");
     tips.add(
-        "Você ganhou entradas para a boate DANCETIVE. Diesque 01-1-1-1 para adquiri-las.");
+        "Você ganhou entradas para a boate DANCETIVE. Disque 01-1-1-1 para adquiri-las.");
     tips.add(
         "TELETIVE informa: Seu saldo está acabando. Faça uma recarga em um posto próximo de você.");
     tips.add(
@@ -33,7 +33,7 @@ class MessagesUtil {
   static addTipsKiller(List<String> tips, String killer) {
     if (killer == "Dona BRANCA") {
       tips.add(
-          "A florista estava me ajudando a decidir algumas flores no momento do crime.");
+          "A florista estava me ajudando a escolher algumas flores no momento do crime.");
     } else if (killer != "Dona VIOLETA") {
       tips.add(
           "No momento do crime eu estava com a médica dando remédios para meu tio.");
@@ -76,7 +76,7 @@ class MessagesUtil {
       tips.add(
           "Eu vi o corpo de Carlos Fortuna e não havia nenhuma bala ou marcas de tiro.");
     } else if (weapon != "Faca") {
-      tips.add("Me falaram que a arma do crime não é um elemento de cozinha");
+      tips.add("Me falaram que a arma do crime não é um elemento de cozinha.");
     } else if (weapon != "Pá") {
       tips.add(
           "Tenho certeza que a arma utilizada para o crime não é a mesma que foi usada para enterrar Carlos Fortuna.");

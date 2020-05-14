@@ -29,6 +29,7 @@ flutter:
     - assets/weapons/
     - assets/places/
     - assets/sounds/
+    - assets/sounds/voices/
 
   fonts:
     - family: Redacted
