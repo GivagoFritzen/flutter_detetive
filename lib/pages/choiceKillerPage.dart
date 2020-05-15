@@ -351,11 +351,15 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
       setState(() {
         isWrong = true;
       });
-    } else
+    } else {
+      setState(() {
+        isWrong = false;
+      });
       model.cleanAllInformation();
-      Navigator.pushNamed(
+      Navigator.pushNamedAndRemoveUntil(
         context,
         '/newspaper',
+        (Route route) => false,
         arguments: {
           'personName': killer,
           'personImage': GameManagersUtil.getImageNameKiller(killer),
@@ -365,6 +369,7 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
           'weaponImage': GameManagersUtil.getImageNameWeapon(murderWeapon),
         },
       );
+    }
   }
 
   String getWrongText() {
@@ -413,10 +418,15 @@ class ChoiceKillerPageState extends State<ChoiceKillerPage> {
               isWrong = false;
             }),
             if (model.players.length == 0)
-              Navigator.pushNamedAndRemoveUntil(
-                  context, '/home', (Route route) => false)
+              {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/home', (Route route) => false)
+              }
             else
-              {Navigator.pushNamed(context, '/camera')}
+              {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, '/camera', (Route route) => false)
+              }
           },
         ),
         Spacer(),
