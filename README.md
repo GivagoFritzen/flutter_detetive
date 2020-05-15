@@ -1,16 +1,24 @@
-# flutterdetetive
+# Flutter Detetive
 
-A new Flutter application.
+Esse app foi desenvolvido pela paixão de programar e de boardgame. Há algum tempo comprei o tabuleiro detetive no qual também funcionava com o app, mas não tive uma boa experiência, com isso, decidi fazer esse app deixando o mais próximo do original.
 
-## Getting Started
+Servindo apenas para intuito de treinamento, o app original você pode encontrar aqui:
+[https://play.google.com/store/apps/details?id=br.com.siouxmobile.detetive&hl=pt_BR](https://play.google.com/store/apps/details?id=br.com.siouxmobile.detetive&hl=pt_BR)
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Tecnologia
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+### Flutter
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Imagens
+
+
+![Image](https://i.imgur.com/b5vIq0n.png)
+
+![Image](https://i.imgur.com/XIFP1Fx.png)
+
+![Image](https://i.imgur.com/KWJmVKL.png)
+
+![Image](https://i.imgur.com/R2v73dx.png)
+
+![Image](https://i.imgur.com/H9sbjpd.png)
